@@ -8,10 +8,17 @@
 
 double read_and_sum(int s);
 
-struct Vector {
+class Vector {
 
-    int sz;
+public:
+    Vector(int s) :elem{new double[s]}, sz{s} { } // constructor
+    double& operator[](int i) { return elem[i]; } // subscript function that returns a reference to the given element
+                                                  // allows for you to check given indexes and such
+    int size() { return sz; }
+
+private:
     double *elem;
+    int sz;
 };
 
 int main(int argc, char **argv) {
@@ -19,27 +26,20 @@ int main(int argc, char **argv) {
     std::cout<<read_and_sum(3);
 }
 
-// & in parameter passes by reference
-void vector_init(Vector& v, int s) {
-
-    v.elem = new double[s]; // new operator allocates memory from the heap
-    v.sz = s;
-}
-
 double read_and_sum(int s) {
 
-    Vector v;
-    vector_init(v, s);
+    Vector v(s);
 
-    for (int i = 0; i != s; i++) {
+    for (int i = 0; i != v.size(); ++i) {
 
-        std::cin>>v.elem[i];
+        std::cin>>v[i];
     }
 
     double sum = 0;
-    for (int i = 0; i != s; i++) {
 
-        sum += v.elem[i];
+    for (int i = 0; i < v.size(); ++i) {
+
+        sum += v[i];
     }
 
     return sum;
