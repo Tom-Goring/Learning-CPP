@@ -6,16 +6,18 @@
 #define EXERCISES_VECTOR_H
 #endif //EXERCISES_VECTOR_H
 
-class Vector {
+class BasicVector {
 
 public:
-    explicit Vector(int s);
+    explicit BasicVector(int s);
+    ~BasicVector();
     double& operator[](int i);
-    int size();
+    int size() const;
 
 private:
     double *elem;
     int sz;
 };
 
-void TestVRangeException(Vector& v);
+void TestVRangeException(BasicVector& v);
+void TestVectorConstructor();
