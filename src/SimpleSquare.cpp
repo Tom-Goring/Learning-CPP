@@ -7,13 +7,6 @@
 double square(double x);
 void print_square(double x);
 
-int main(int argc, char **argv) {
-
-    print_square(2);
-    print_square(3);
-    print_square(4);
-}
-
 double square(double x) {
 
     return x * x;

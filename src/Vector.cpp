@@ -1,5 +1,5 @@
 //
-// Created by tomgo on 06/12/2018.
+// Created by Tom Goring on 06/12/2018.
 //
 // Simple implementation of a vector struct - will be expanded later.
 //
@@ -21,7 +21,7 @@ private:
     int sz;
 };
 
-int main(int argc, char **argv) {
+int test_Vector1(int argc, char **argv) {
 
     std::cout<<read_and_sum(3);
 }

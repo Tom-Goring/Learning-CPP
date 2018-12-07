@@ -8,7 +8,7 @@
 enum class Colour { red, blue, green }; // can remove class for a simple int enum (described as "plain")
 enum class Traffic_light { green, yellow, red };
 
-Traffic_light& operator++(Traffic_light& t, int) {
+Traffic_light operator++(Traffic_light& t, int) {
     // means that when an instance of traffic light is incremented it actually uses the below code
     // so when TL = green -> TL++ -> TL = yellow
 
@@ -23,7 +23,7 @@ Traffic_light& operator++(Traffic_light& t, int) {
 enum Days {Saturday, Sunday, Tuesday, Wednesday, Thursday, Friday}; // typical enum
 
 
-int main(int argc, char **argv) {
+void weekend_detector(int argc, char **argv) {
 
     time_t rawtime;
     struct tm * ptm;
@@ -31,25 +31,22 @@ int main(int argc, char **argv) {
     time(&rawtime);
     ptm = gmtime(&rawtime); // gets current date information and puts it in a tm struct.
 
-    if (ptm->tm_wday == Days::Thursday) {
+    int current_day = ptm->tm_wday;
+
+    if (current_day == Days::Thursday) {
 
         std::cout<<"It's thursday! Almost the weekend...";
     }
+    else if (current_day == Days::Friday) {
 
-    Traffic_light c = Traffic_light::red;
-
-    c = c++;
-
-    if (c == Traffic_light::red) {
-
-        std::cout<<"Traffic light is red.\n";
+        std::cout<<"It's Friday. Very close now.\n";
     }
-    else if (c == Traffic_light::yellow) {
+    else if (current_day == Days::Saturday) {
 
-        std::cout<<"Traffic light is yellow.\n";
+        std::cout<<"It's the weekend!\n";
     }
-    else {
+    else if (current_day == Days::Sunday) {
 
-        std::cout<<"Traffic light is green.\n";
+        std::cout<<"It's the weekend!\n";
     }
 }
