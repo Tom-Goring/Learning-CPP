@@ -1,6 +1,18 @@
-set(CMAKE_LEGACY_CYGWIN_WIN32 0) # Remove when CMake >= 2.8.4 is required
-project(simple_example)
-set(CMAKE_CXX_STANDARD 11)
+cmake_minimum_required(VERSION 3.13)
+project(Exercises)
 
-set(SOURCE_FILES "Hello World.cpp")
-add_executable(simple_example ${SOURCE_FILES})
+# Set output folder
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+# The following folder will be included
+include_directories("${PROJECT_SOURCE_DIR}")
+
+# Version numbers
+set (Exercises_VERSION_MAJOR 1)
+set (Exercises_VERSION_MINOR 0)
+
+set(SOURCE_FILES src/Test.cpp)
+add_executable(Exercises ${SOURCE_FILES})
