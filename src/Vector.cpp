@@ -8,6 +8,10 @@
 
 Vector::Vector(int s) {
 
+    if (s < 0) {
+
+        throw std::length_error("Vector constructor: negative size");
+    } // if given length is invalid throw exception
     elem = new double[s];
     sz = s;
 }
