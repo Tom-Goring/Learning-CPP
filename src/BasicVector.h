@@ -12,7 +12,7 @@ public:
     explicit BasicVector(int s);
     ~BasicVector();
     double& operator[](int i);
-    int size() const;
+    int size();
 
 private:
     double *elem;
