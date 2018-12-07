@@ -4,8 +4,10 @@
 
 #include <stdexcept>
 #include <iostream>
-#include "BasicVector.h"
 
+#ifndef EXERCISES_VECTOR_H
+#include "BasicVector.h"
+#endif
 
 BasicVector::BasicVector(int s) {
 
