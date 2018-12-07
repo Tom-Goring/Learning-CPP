@@ -1,46 +1,42 @@
 //
 // Created by Tom Goring on 06/12/2018.
 //
-// Simple implementation of a vector struct - will be expanded later.
-//
 
+#include <stdexcept>
 #include <iostream>
+#include "Vector.h"
 
-double read_and_sum(int s);
+Vector::Vector(int s) {
 
-class Vector {
-
-public:
-    Vector(int s) :elem{new double[s]}, sz{s} { } // constructor
-    double& operator[](int i) { return elem[i]; } // subscript function that returns a reference to the given element
-                                                  // allows for you to check given indexes and such
-    int size() { return sz; }
-
-private:
-    double *elem;
-    int sz;
-};
-
-int test_Vector1(int argc, char **argv) {
-
-    std::cout<<read_and_sum(3);
+    elem = new double[s];
+    sz = s;
 }
 
-double read_and_sum(int s) {
+double& Vector::operator[](int i) {
 
-    Vector v(s);
+    if (i < 0 || i > size() - 1) { // if array index given is out of range
 
-    for (int i = 0; i != v.size(); ++i) {
-
-        std::cin>>v[i];
+        throw std::out_of_range("Vector::operator[]");
     }
 
-    double sum = 0;
+    return elem[i];
+}
 
-    for (int i = 0; i < v.size(); ++i) {
+int Vector::size() {
 
-        sum += v[i];
+    return sz;
+}
+
+
+//tests accessing an out of range index of a vector class.
+void TestVRangeException(Vector& v) {
+
+    try {
+
+        v[v.size()] = 7;
     }
+    catch (std::out_of_range) {
 
-    return sum;
+        std::cout<<"Given index is out of range.";
+    }
 }
