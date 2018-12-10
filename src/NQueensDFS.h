@@ -11,10 +11,16 @@
 
 struct candidateSolution {
 
-    int board[N] = {0, 1, 2, 3, 4, 5, 6, 7};
-    int size = 8;
+    int board[N] = {-1, -1, -1, -1, -1, -1, -1, -1};
+    int size = 0;
     bool valid = true;
 };
 
-int calculateNumberOfQueensUnderAttack(candidateSolution candidateToTest);
 void printCandidateSolution(candidateSolution candidateSolution);
+bool hasValidBoard(candidateSolution candidatetoTest);
+int calculateNumberOfQueensUnderAttack(candidateSolution candidateToTest);
+void addQueenToColumnOfWorkingCandidate(int columnToPlace);
+void printWorkingCandidate();
+void saveCandidateToOpenList(candidateSolution candidateToSave);
+void deleteLastEntryInOpenList();
+int getIndexOfCandidateSolution(candidateSolution candidateToFind);
