@@ -1,28 +1,71 @@
 //
 // Created by Tom Goring on 08/12/2018.
 //
+// DO NOT USE THIS FOR ANY COURSEWORK YOU HAVE - It'll probably get caught in a closeness test and banned - it's not worth
+// getting kicked out for.
+//
+// Any feedback on how to improve this / make it more "c++ like" is appreciated.
+//
 
 #include "NQueensDFS.h"
 #include <vector>
 #include <iostream>
+#include <cstring>
+
 
 candidateSolution workingCandidate;
-std::vector<candidateSolution> openList;
+std::vector<candidateSolution> openList; // a list of solutions we have yet to examine
+
 
 int main(int argc, char **argv) {
 
+    bool solutionFound = false;
+    int numberOfSolutionsExamined = 0;
+
+    //set up the board with a starting queen
+
     std::cout.flush();
+
     int startingColumnOfQueen = 0;
 
-    addQueenToColumnOfWorkingCandidate(startingColumnOfQueen);
+    addQueenToColumnOfNextRowInWorkingCandidate(startingColumnOfQueen);
+    saveWorkingCandidateToOpenList();
+    testCurrentWorkingCandidate();
 
+    // start the depth-first search to find the solution
+
+    while (!solutionFound && !openList.empty()) {
+
+        if (workingCandidate.valid) {
+
+            deleteLastEntryInOpenList();
+            generateChildrenOfWorkingCandidate();
+
+            setWorkingCandidateToLastCandidateInOpenList();
+        }
+        else {
+
+            deleteLastEntryInOpenList();
+            setWorkingCandidateToLastCandidateInOpenList();
+        }
+
+        //printWorkingCandidate();
+        testCurrentWorkingCandidate();
+        numberOfSolutionsExamined++;
+
+
+        if (workingCandidate.size == N && hasValidBoard(workingCandidate)) {
+
+            solutionFound = true;
+        }
+    }
+
+    std::cout.flush();
+    std::cout << "Solution found in " << numberOfSolutionsExamined << " moves: " << std::endl;
     printWorkingCandidate();
+    std::cin.get();
+
 }
-
-
-
-
-// Functions to manipulate a candidateSolution
 
 void printCandidateSolution(candidateSolution candidateSolution) {
 
@@ -32,12 +75,12 @@ void printCandidateSolution(candidateSolution candidateSolution) {
 
     std::cout << std::endl;;
 
-    for (int row = 0; row < N; row++) {
+    for (int row : candidateSolution.board) {
 
         // Print queens on row
         for (int column = 0; column < N; column++) {
 
-            if (candidateSolution.board[row] == column)
+            if (row == column)
                 std::cout << "|Q";
             else
                 std::cout << "| ";
@@ -61,35 +104,51 @@ int calculateNumberOfQueensUnderAttack(candidateSolution candidateToTest) {
 
     int vulnerableQueens = 0;
 
-    for (int attackingQueen = 0; attackingQueen < candidateToTest.size - 1; attackingQueen++) {
+    // for every queen
+    for (int qToExamine = 0; qToExamine < candidateToTest.size; ++qToExamine) {
 
-        for (int defendingQueen = 0; defendingQueen < attackingQueen + 1; defendingQueen++) {
+        // check all rows that haven't already been checked - to prevent from making previously made comparisons.
+        for (int qToCompare = qToExamine + 1; qToCompare < candidateToTest.size; ++qToCompare) {
 
-            // if queens are in same column
-            if (candidateToTest.board[attackingQueen] == candidateToTest.board[defendingQueen]) {
-
-                vulnerableQueens++;
-            }
-
-            if ((attackingQueen - defendingQueen) ==
-                candidateToTest.board[attackingQueen] - candidateToTest.board[defendingQueen]) {
+            // test to see if queens are in same column
+            if (candidateToTest.board[qToExamine] == candidateToTest.board[qToCompare]) {
 
                 vulnerableQueens++;
             }
 
-            if (attackingQueen - defendingQueen ==
-                (candidateToTest.board[defendingQueen] - candidateToTest.board[attackingQueen])) {
+            int deltaRow;
+            int deltaCol;
+            int difference;
+
+            deltaRow = qToExamine - qToCompare;
+            deltaCol = workingCandidate.board[qToExamine] - workingCandidate.board[qToCompare];
+
+            difference = deltaRow - deltaCol;
+
+            if (difference == 0) {
 
                 vulnerableQueens++;
             }
 
+            difference = deltaRow + abs(deltaCol);
+
+            if (difference == 0) {
+
+                vulnerableQueens++;
+            }
         }
     }
+
+    return vulnerableQueens;
 }
 
-// Functions to manipulate the workingCandidate
+int testCurrentWorkingCandidate() {
 
-void addQueenToColumnOfWorkingCandidate(int columnToPlace) {
+    // if working candidate has more than 0 queens under attack, it is neither a valid partial or full solution
+    workingCandidate.valid = calculateNumberOfQueensUnderAttack(workingCandidate) <= 0;
+}
+
+void addQueenToColumnOfNextRowInWorkingCandidate(int columnToPlace) {
 
     int rowToPlace = workingCandidate.size;
 
@@ -98,16 +157,32 @@ void addQueenToColumnOfWorkingCandidate(int columnToPlace) {
     workingCandidate.size++;
 }
 
+void moveQueenInRowToColumnOfWorkingCandidate(int rowToMoveIn, int columnToMoveTo) {
+
+    workingCandidate.board[rowToMoveIn] = columnToMoveTo;
+}
+
+void generateChildrenOfWorkingCandidate() {
+
+    int currentRow = workingCandidate.size;
+
+    addQueenToColumnOfNextRowInWorkingCandidate(0);
+
+    for (int column = 0; column < N; ++column) {
+
+        moveQueenInRowToColumnOfWorkingCandidate(currentRow, column);
+        saveWorkingCandidateToOpenList();
+    }
+}
+
 void printWorkingCandidate() {
 
     printCandidateSolution(workingCandidate);
 }
 
-// Functions to manipulate list
+void saveWorkingCandidateToOpenList() {
 
-void saveCandidateToOpenList(candidateSolution candidateToSave) {
-
-    openList.push_back(candidateToSave);
+    openList.push_back(workingCandidate);
 }
 
 void deleteLastEntryInOpenList() {
@@ -115,20 +190,7 @@ void deleteLastEntryInOpenList() {
     openList.pop_back();
 }
 
-int getIndexOfCandidateSolution(candidateSolution candidateToFind) {
+void setWorkingCandidateToLastCandidateInOpenList() {
 
-    int index = 0;
-    bool found = false;
-
-    while(!found) {
-
-        if (openList[index].board == candidateToFind.board) {
-
-            found = true;
-        }
-
-        index++;
-    }
-
-    return index;
+    workingCandidate = openList.back();
 }
