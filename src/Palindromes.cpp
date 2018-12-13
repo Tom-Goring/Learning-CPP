@@ -13,7 +13,7 @@ using std::endl;
 using std::tolower;
 
 bool palindromesPossible(string input);
-void isPalindromePermutation(string input);
+void isPalindromePermutation(const string &input);
 
 int main() {
 
@@ -23,7 +23,7 @@ int main() {
     isPalindromePermutation("tact coa");
 }
 
-void isPalindromePermutation(const string input) {
+void isPalindromePermutation(const string &input) {
 
     if (palindromesPossible(input)) {
 
