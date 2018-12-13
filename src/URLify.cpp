@@ -1,6 +1,8 @@
 //
 // Created by Tom Goring on 13/12/2018.
 //
+// This could be more efficient if I were to use pointers instead of array indexes I think.
+//
 
 #include <iostream>
 #include <string>
