@@ -13,13 +13,6 @@ include_directories("${PROJECT_SOURCE_DIR}")
 set (Exercises_VERSION_MAJOR 1)
 set (Exercises_VERSION_MINOR 0)
 
-set(SOURCE_FILES
-        src/Test.cpp
-        src/BasicVector.cpp
-        src/BasicVector.h
-        src/Conversion.cpp
-        src/Conversion.h
-        src/Collatz.cpp
-        src/Collatz.h)
+set(SOURCE_FILES src/MinimumBase.cpp)
 
 add_executable(Exercises ${SOURCE_FILES})
