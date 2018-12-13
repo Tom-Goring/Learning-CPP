@@ -10,9 +10,9 @@ using std::cout;
 using std::endl;
 
 void URLify(string & string);
-void replaceSpaces(string &string, unsigned long num_spaces);
-unsigned long countSpaces(string &string);
-unsigned long findIndexOfSpace(string &string);
+void replaceSpaces(string &string, int num_spaces);
+int countSpaces(string &string);
+int findIndexOfSpace(string &string);
 void moveCharsBackFrom(string &string, int index_of_space);
 
 int main() {
@@ -28,14 +28,14 @@ int main() {
 
 void URLify(string & string) {
 
-    unsigned long num_spaces = countSpaces(string);
+    int num_spaces = countSpaces(string);
 
     string.resize(string.size() + num_spaces * 2);
 
     replaceSpaces(string, num_spaces);
 }
 
-void replaceSpaces(string &string, unsigned long num_spaces) {
+void replaceSpaces(string &string, int num_spaces) {
 
     for (int space = 0; space < num_spaces; space++) {
 
@@ -49,7 +49,7 @@ void replaceSpaces(string &string, unsigned long num_spaces) {
     }
 }
 
-unsigned long countSpaces(string &string) {
+int countSpaces(string &string) {
 
     int num_spaces = 0;
 
@@ -64,10 +64,10 @@ unsigned long countSpaces(string &string) {
     return num_spaces;
 }
 
-unsigned long findIndexOfSpace(string &string) {
+int findIndexOfSpace(string &string) {
 
     bool space_found = false;
-    unsigned long index_of_space = string.size();
+    int index_of_space = string.size();
 
     while(!space_found) {
 
@@ -84,7 +84,7 @@ unsigned long findIndexOfSpace(string &string) {
 
 void moveCharsBackFrom(string &string, int index_of_space) {
 
-    for (unsigned long i = string.size(); i > index_of_space; i--) {
+    for (int i = string.size(); i > index_of_space; i--) {
 
         if (string[i] != '\0') {
 
